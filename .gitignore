@@ -1,0 +1,10 @@
+/node_modules
+node_modules/
+
+.env
+.env.development
+.env.local
+
+dump.rdb
+
+tsconfig.txt
