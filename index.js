@@ -24,14 +24,14 @@ connectDB();
 
 const PORT = process.env.PORT || 5000;
 
-// const server = new redisServer({
-//   conf: resolve(__dirname, "redis.conf"),
-//   port: 6379,
-// });
+const server = new redisServer({
+  conf: resolve(__dirname, "redis.conf"),
+  port: process.env.REDIS_PORT,
+});
 
-// server.open().then(() => {
-//   console.log(`Redis Server running...`);
-// });
+server.open().then(() => {
+  console.log(`Redis Server running...`);
+});
 
 client.on("connect", () => {
   console.log("Connected to redis...");
