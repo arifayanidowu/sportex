@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --passWithNoTests",
-    "start": "NODE_ENV=development node --trace-warnings index.js",
+    "start": "npm run redis:server && NODE_ENV=development node --trace-warnings index.js",
     "dev": "NODE_ENV=development nodemon --trace-warnings index.js",
     "redis:server": "redis-server redis.conf",
     "data:import": "node seeder",
