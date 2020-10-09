@@ -31,11 +31,14 @@ const server = new redisServer({
 
 server.open().then(() => {
   console.log(`Redis Server running...`);
+  client.on("connect", () => {
+    console.log("Connected to redis...");
+  });
 });
 
-client.on("connect", () => {
-  console.log("Connected to redis...");
-});
+// client.on("connect", () => {
+//   console.log("Connected to redis...");
+// });
 
 colors.enable();
 
