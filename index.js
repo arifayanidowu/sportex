@@ -22,6 +22,8 @@ config();
 
 connectDB();
 
+const PORT = process.env.PORT || 5000;
+
 // const server = new redisServer({
 //   conf: resolve(__dirname, "redis.conf"),
 //   port: 6379,
@@ -89,8 +91,6 @@ if (process.env.NODE_ENV === "production") {
     res.send("API is running....");
   });
 }
-
-const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(
