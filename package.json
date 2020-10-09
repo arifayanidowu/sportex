@@ -8,8 +8,6 @@
     "start": "NODE_ENV=development node --trace-warnings index.js",
     "dev": "NODE_ENV=development nodemon --trace-warnings index.js",
     "redis:server": "redis-server redis.conf",
-    "build": "tsc --project ./",
-    
     "data:import": "node seeder",
     "data:destroy": "node seeder -d"
   },
