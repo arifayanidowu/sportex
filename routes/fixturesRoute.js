@@ -17,10 +17,10 @@ router
   .get(protect, getAllFixtures);
 
 router.get("/:status", getFixturesByStatus);
+router.get("/fixture/:id", protect, admin, getFixture);
 
 router
   .route("/:id")
-  .get(protect, admin, getFixture)
   .put(protect, admin, updateFixture)
   .delete(protect, admin, deleteFixture);
 

@@ -40,7 +40,7 @@ const createTeam = asyncHandler(async (req, res) => {
  */
 
 const getTeams = asyncHandler(async (req, res) => {
-  const teams = await Team.find({});
+  const teams = await Team.find({}).exec()
   res.status(200).json(teams);
   client.setex("teams", 3600, JSON.stringify(teams));
 });

@@ -7,8 +7,9 @@
     "test": "jest --passWithNoTests",
     "start": "NODE_ENV=development node --trace-warnings index.js",
     "dev": "NODE_ENV=development nodemon --trace-warnings index.js",
+    "redis:server": "redis-server redis.conf",
     "build": "tsc --project ./",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install && npm run build",
+    
     "data:import": "node seeder",
     "data:destroy": "node seeder -d"
   },
@@ -26,6 +27,7 @@
     "@types/colors": "^1.2.1",
     "@types/morgan": "^1.9.1",
     "bcryptjs": "^2.4.3",
+    "build-url": "^6.0.1",
     "colors": "^1.4.0",
     "connect-redis": "^5.0.0",
     "dotenv": "^8.2.0",

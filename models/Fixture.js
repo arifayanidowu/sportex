@@ -2,22 +2,18 @@ const mongoose = require("mongoose");
 
 const FixtureSchema = mongoose.Schema(
   {
-    match: {
-      type: String,
-      required: true,
+    homeTeam: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Team"
     },
-    league: {
-      type: String,
-      required: true,
+    awayTeam: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Team"
     },
-
     status: {
       type: String,
       enum: ["pending", "completed"],
       default: "pending",
-    },
-    stadium: {
-      type: String,
     },
   },
   { timestamps: true }

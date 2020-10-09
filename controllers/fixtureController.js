@@ -9,12 +9,11 @@ const Fixture = require("../models/Fixture");
  */
 
 const createFixture = asyncHandler(async (req, res) => {
-  const { match, league, stadium } = req.body;
+  const { homeTeam, awayTeam } = req.body;
 
   const fixture = await Fixture.create({
-    match,
-    league,
-    stadium,
+    homeTeam,
+    awayTeam,
   });
   if (fixture) {
     res.status(201).json(fixture);
@@ -32,9 +31,19 @@ const createFixture = asyncHandler(async (req, res) => {
  */
 
 const getAllFixtures = asyncHandler(async (req, res) => {
-  const fixtures = await Fixture.find({});
+  const fixtures = await Fixture.find({})
+    .sort({ _id: "desc" })
+    .populate({ path: "homeTeam" })
+    .populate({ path: "awayTeam" })
+    .exec();
   if (fixtures) {
-    res.json(fixtures);
+    let newFixtures = fixtures.map((fixture) => {
+      let match = `${fixture.homeTeam.name} vs ${fixture.awayTeam.name}`;
+      let stadium = `${fixture.homeTeam.stadium}`;
+      let status = fixture.status;
+      return { _id: fixture._id, match, stadium, status };
+    });
+    res.json(newFixtures);
   } else {
     res.status(404);
     throw new Error("No data found.");
@@ -49,9 +58,22 @@ const getAllFixtures = asyncHandler(async (req, res) => {
  */
 
 const getFixturesByStatus = asyncHandler(async (req, res) => {
-  const fixtures = await Fixture.find({ status: req.params.status });
+  const fixtures = await Fixture.find({ status: req.params.status })
+    .sort({
+      _id: "desc",
+    })
+    .populate({ path: "homeTeam" })
+    .populate({ path: "awayTeam" })
+    .exec();
   if (fixtures) {
-    res.json(fixtures);
+    let newFixtures = fixtures.map((fixture) => {
+      let match = `${fixture.homeTeam.name} vs ${fixture.awayTeam.name}`;
+      let stadium = `${fixture.homeTeam.stadium}`;
+      let status = fixture.status;
+
+      return { _id: fixture._id, match, stadium, status };
+    });
+    res.json(newFixtures);
   } else {
     res.status(404);
     throw new Error("Invalid Data...");
@@ -60,16 +82,24 @@ const getFixturesByStatus = asyncHandler(async (req, res) => {
 
 /**
  * @description Get Fixture by Id
- * @route /api/fixtures/:id
+ * @route /api/fixtures/fixture/:id
  * @method GET
  * @access Private/Admin
  */
 
 const getFixture = asyncHandler(async (req, res) => {
-  const fixture = await Fixture.findById(req.params.id);
+  const fixture = await Fixture.findById(req.params.id)
+    .populate({ path: "homeTeam" })
+    .populate({ path: "awayTeam" })
+    .exec();
 
   if (fixture) {
-    res.json(fixture);
+    let data = {};
+    data.match = `${fixture.homeTeam.name} vs ${fixture.awayTeam.name}`;
+    data.stadium = `${fixture.homeTeam.stadium}`;
+    data._id = fixture._id;
+    data.status = fixture.status;
+    res.json(data);
   } else {
     res.status(404);
     throw new Error("Invalid data...");
@@ -87,13 +117,13 @@ const updateFixture = asyncHandler(async (req, res) => {
   const fixture = await Fixture.findById(req.params.id);
 
   if (fixture) {
-    fixture.match = req.body.match || fixture.match;
-    fixture.league = req.body.league || fixture.league;
+    fixture.homeTeam = req.body.homeTeam || fixture.homeTeam;
+    fixture.awayTeam = req.body.awayTeam || fixture.awayTeam;
     fixture.status = req.body.status || fixture.status;
-    fixture.stadium = req.body.stadium || fixture.stadium;
+
     const updatedFixture = await fixture.save();
 
-    req.status(203).json(updatedFixture);
+    res.status(200).json(updatedFixture);
   } else {
     res.status(404);
     throw new Error("Invalid data.");

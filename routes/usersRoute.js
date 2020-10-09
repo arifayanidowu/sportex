@@ -52,7 +52,7 @@ const updatedUserCache = (req, res, next) => {
 
 router.post("/login", authUser);
 
-router.post("/", registerUser);
+router.post("/register", registerUser);
 
 router.route("/").get(protect, admin, usersCache, getUsers);
 

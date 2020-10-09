@@ -17,6 +17,18 @@ Run the below command to start your redis server, after successfully installing 
 ```bash
   redis-server
 ```
+or 
+
+Run the below command:
+```bash
+    npm run redis:server
+```
+
+Then run:
+
+```bash
+  npm run dev
+```
 
 ## License
 

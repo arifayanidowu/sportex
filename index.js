@@ -15,6 +15,7 @@ const connectDB = require("./config/db");
 const teamsRoute = require("./routes/teamsRoute");
 const fixtureRoute = require("./routes/fixturesRoute");
 const usersRoute = require("./routes/usersRoute");
+const searchRoute = require("./routes/searchRoute");
 const client = require("./utils/redis");
 
 config();
@@ -64,6 +65,7 @@ app.use(
   })
 );
 
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json({ limit: "10kb" }));
 app.use(mongoSanitize());
 // Prevent XSS attack
@@ -74,6 +76,7 @@ app.use(limiter);
 app.use("/api/users", usersRoute);
 app.use("/api/teams", teamsRoute);
 app.use("/api/fixtures", fixtureRoute);
+app.use("/api", searchRoute);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(join(__dirname, "/public")));
