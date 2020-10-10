@@ -1,5 +1,6 @@
 const { config } = require("dotenv");
 const { join, resolve } = require("path");
+
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const helmet = require("helmet");
@@ -24,21 +25,21 @@ connectDB();
 
 const PORT = process.env.PORT || 5000;
 
-const server = new redisServer({
-  conf: resolve(__dirname, "redis.conf"),
-  port: process.env.REDIS_PORT,
-});
-
-server.open().then(() => {
-  console.log(`Redis Server running...`);
-  client.on("connect", () => {
-    console.log("Connected to redis...");
-  });
-});
-
-// client.on("connect", () => {
-//   console.log("Connected to redis...");
+// const server = new redisServer({
+//   conf: resolve(__dirname, "redis.conf"),
+//   port: process.env.REDIS_PORT,
 // });
+
+// server.open().then(() => {
+//   console.log(`Redis Server running...`);
+//   client.on("connect", () => {
+//     console.log("Connected to redis...");
+//   });
+// });
+
+client.on("connect", () => {
+  console.log("Connected to redis...");
+});
 
 colors.enable();
 

@@ -1,7 +1,6 @@
 const { createClient } = require("redis");
 
-const client = createClient({
-  port: process.env.REDIS_PORT,
-});
+const client = createClient(process.env.REDIS_URL);
+
 
 module.exports = client;

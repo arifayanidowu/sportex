@@ -6,5 +6,6 @@ services:
     build: .
     environment:
       NODE_ENV: production
+      REDIS_HOST: redis://db:6379
     ports:
       - 5000:5000
