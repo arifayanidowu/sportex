@@ -1,5 +1,10 @@
 const asyncHandler = require("express-async-handler");
 const Fixture = require("../models/Fixture");
+const Team = require("../models/Team");
+const { setCache } = require("../utils/cache");
+const errorHandler = require("../utils/errorHandler");
+const { generateLink } = require("../utils/generateLink");
+const client = require("../utils/redis");
 
 /**
  * @description Create Fixture
@@ -11,15 +16,30 @@ const Fixture = require("../models/Fixture");
 const createFixture = asyncHandler(async (req, res) => {
   const { homeTeam, awayTeam } = req.body;
 
+  if (homeTeam === awayTeam) {
+    return errorHandler(res, 401, "A Single team cannot play against itself.");
+  }
+
+  let homeTeamData = await Team.findById(homeTeam);
+  let awayTeamData = await Team.findById(awayTeam);
+
+  if (!homeTeamData || !awayTeamData) {
+    errorHandler(res, "One or both teams does not exist.");
+  }
+  const link = generateLink(req, homeTeamData.name, awayTeamData.name);
   const fixture = await Fixture.create({
     homeTeam,
     awayTeam,
+    link,
   });
   if (fixture) {
     res.status(201).json(fixture);
   } else {
-    res.status(404);
-    throw new Error("Invalid data.");
+    return errorHandler(
+      res,
+      404,
+      "Something went wrong while creating this data."
+    );
   }
 });
 
@@ -41,12 +61,15 @@ const getAllFixtures = asyncHandler(async (req, res) => {
       let match = `${fixture.homeTeam.name} vs ${fixture.awayTeam.name}`;
       let stadium = `${fixture.homeTeam.stadium}`;
       let status = fixture.status;
-      return { _id: fixture._id, match, stadium, status };
+      let link = fixture.link;
+
+      return { _id: fixture._id, match, stadium, status, link };
     });
     res.json(newFixtures);
+
+    setCache("fixtures", 3600, newFixtures);
   } else {
-    res.status(404);
-    throw new Error("No data found.");
+    return errorHandler(res, 404, "No data found.");
   }
 });
 
@@ -71,12 +94,14 @@ const getFixturesByStatus = asyncHandler(async (req, res) => {
       let stadium = `${fixture.homeTeam.stadium}`;
       let status = fixture.status;
 
-      return { _id: fixture._id, match, stadium, status };
+      let link = fixture.link;
+
+      return { _id: fixture._id, match, stadium, status, link };
     });
     res.json(newFixtures);
+    setCache("fixturesByStatus", 3600, newFixtures);
   } else {
-    res.status(404);
-    throw new Error("Invalid Data...");
+    return errorHandler(res, 404, "Invalid data.");
   }
 });
 
@@ -99,10 +124,12 @@ const getFixture = asyncHandler(async (req, res) => {
     data.stadium = `${fixture.homeTeam.stadium}`;
     data._id = fixture._id;
     data.status = fixture.status;
+    data.link = fixture.link;
     res.json(data);
+
+    setCache("fixture", 3600, data);
   } else {
-    res.status(404);
-    throw new Error("Invalid data...");
+    return errorHandler(res, 404, "Invalid data.");
   }
 });
 
@@ -125,8 +152,7 @@ const updateFixture = asyncHandler(async (req, res) => {
 
     res.status(200).json(updatedFixture);
   } else {
-    res.status(404);
-    throw new Error("Invalid data.");
+    return errorHandler(res, 404, "Invalid data.");
   }
 });
 
@@ -150,8 +176,7 @@ const deleteFixture = asyncHandler(async (req, res) => {
     await fixture.remove();
     res.json({ message: "Fixture removed" });
   } else {
-    res.status(404);
-    throw new Error("Invalid data.");
+    return errorHandler(res, 404, "Invalid data.");
   }
 });
 

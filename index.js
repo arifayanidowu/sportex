@@ -18,6 +18,7 @@ const fixtureRoute = require("./routes/fixturesRoute");
 const usersRoute = require("./routes/usersRoute");
 const searchRoute = require("./routes/searchRoute");
 const client = require("./utils/redis");
+const { getCache } = require("./utils/cache");
 
 config();
 

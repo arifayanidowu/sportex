@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --passWithNoTests",
+    "test": "NODE_ENV=test jest --config ./jest.config.js --passWithNoTests",
     "start": "NODE_ENV=development node --trace-warnings index.js",
     "dev": "NODE_ENV=development nodemon --trace-warnings index.js",
     "redis:server": "redis-server redis.conf",
@@ -14,7 +14,8 @@
   "jest": {
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
-      "/node_modules/"
+      "/node_modules/",
+      "/dist/"
     ]
   },
   "keywords": [],

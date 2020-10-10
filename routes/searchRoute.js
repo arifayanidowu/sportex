@@ -48,7 +48,6 @@ router.get("/search", async (req, res) => {
       }
     });
     res.json(results);
-    // client.setex("results", 3600, JSON.stringify(results));
   } else {
     res.status(404);
     throw new Error("Invalid Data...");
