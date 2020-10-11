@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const colors = require("colors");
-const users = require("./data/users");
-const teams = require("./data/teams");
+const users = require("./src/data/users");
+const teams = require("./src/data/teams");
 
-const User = require("./models/User");
-const Team = require("./models/Team");
+const User = require("./src/models/User");
+const Team = require("./src/models/Team");
 
-const connectDB = require("./config/db");
+const connectDB = require("./src/config/db");
 
 dotenv.config();
 

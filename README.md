@@ -12,7 +12,7 @@ Run `npm install` to Install all the packages used.
 
 To use `Redis`, it's preferred you have `redis-cli` installed on your local machine and `redis-server`,
 
-Run the below command to start your redis server, after successfully installing redis and redis-server on your machine.
+Run the below command to start your redis server, if you have redis and redis-server on your machine.
 
 ```bash
   redis-server
@@ -29,6 +29,15 @@ Then run:
 ```bash
   npm run dev
 ```
+
+Public Heroku URL can be found on [Sportex API](https://sportex-api.herokuapp.com)
+
+To Run the test scripts, it's advised to run 
+
+```bash
+  yarn test name.test.js 
+```
+to prevent conflicts.
 
 ## License
 
