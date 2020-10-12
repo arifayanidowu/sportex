@@ -1,11 +1,10 @@
 const express = require("express");
 const Fixture = require("../models/Fixture");
 const Team = require("../models/Team");
-const cache = require("../utils/cache");
 
 const router = express.Router();
 
-router.get("/search", cache.route(), async (req, res) => {
+router.get("/search", async (req, res) => {
   const { filter } = req.query;
 
   console.log(filter);

@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Team = require("../models/Team");
+const { setCache } = require("../utils/cache");
 const errorHandler = require("../utils/errorHandler");
 
 /**
@@ -62,6 +63,7 @@ const getTeamById = asyncHandler(async (req, res) => {
   const team = await Team.findById(req.params.id);
 
   if (team) {
+    setCache(req.params.id, team);
     res.json(team);
   } else {
     return errorHandler(res, 404, "Team not Found.");

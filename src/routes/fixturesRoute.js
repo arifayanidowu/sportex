@@ -9,17 +9,19 @@ const {
 } = require("../controllers/fixtureController");
 
 const { protect, admin } = require("../middleware/auth");
-const cache = require("../utils/cache");
+const { getCache } = require("../utils/cache");
+
+// const cache = require("../utils/cache");
 
 const router = express.Router();
 
 router
   .route("/")
   .post(protect, admin, createFixture)
-  .get(protect, admin, cache.route(), getAllFixtures);
+  .get(protect, admin, getAllFixtures);
 
-router.get("/:status", cache.route(), getFixturesByStatus);
-router.get("/fixture/:id", protect, admin, cache.route(), getFixture);
+router.get("/:status", getFixturesByStatus);
+router.get("/fixture/:id", protect, admin, getCache, getFixture);
 
 router
   .route("/:id")

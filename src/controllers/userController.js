@@ -3,6 +3,7 @@ const User = require("../models/User");
 const genToken = require("../utils/genToken");
 
 const errorHandler = require("../utils/errorHandler");
+const { setCache } = require("../utils/cache");
 
 /**
  * @description    Auth user & get token
@@ -94,6 +95,7 @@ const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id).select("-password");
 
   if (user) {
+    setCache(req.params.id, user);
     res.json({
       _id: user._id,
       name: user.name,
@@ -116,6 +118,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
+    setCache(req.params.id, user);
     res.json({
       _id: user._id,
       name: user.name,

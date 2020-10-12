@@ -1,11 +1,24 @@
-const ExpressRedisCache = require("express-redis-cache");
+const errorHandler = require("./errorHandler");
+const client = require("./redis");
 
-const cache = ExpressRedisCache({
-  expire: 10,
-  host:
-    process.env.NODE_ENV === "production"
-      ? process.env.REDIS_URL
-      : "http://localhost",
-});
-
-module.exports = cache;
+module.exports = {
+  getCache: (req, res, next, key) => {
+    const { id } = req.params;
+    client.get(id, (err, reply) => {
+      if (err) {
+        return errorHandler(res, 400, "Could not get cached data");
+      }
+      if (reply === null) {
+        next();
+      } else {
+        return reply;
+      }
+    });
+  },
+  setCache: (key = "", data) => {
+    client.setex(key, 10, JSON.stringify(data));
+  },
+  delCache: (key = "") => {
+    client.del(key);
+  },
+};

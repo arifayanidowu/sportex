@@ -8,15 +8,16 @@ const {
 } = require("../controllers/teamController");
 
 const { protect, admin } = require("../middleware/auth");
-const cache = require("../utils/cache");
+const { getCache } = require("../utils/cache");
+
 const router = express.Router();
 
 router.route("/").post(protect, admin, createTeam);
-router.get("/all", protect, cache.route(), getTeams);
+router.get("/all", protect, getTeams);
 
 router
   .route("/:id")
-  .get(protect, admin, cache.route(), getTeamById)
+  .get(protect, admin, getCache, getTeamById)
   .put(protect, admin, updateTeam)
   .delete(protect, admin, deleteTeam);
 

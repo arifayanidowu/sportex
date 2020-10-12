@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Fixture = require("../models/Fixture");
 const Team = require("../models/Team");
+const { setCache } = require("../utils/cache");
 const errorHandler = require("../utils/errorHandler");
 const { generateLink } = require("../utils/generateLink");
 
@@ -63,7 +64,10 @@ const getAllFixtures = asyncHandler(async (req, res) => {
 
       return { _id: fixture._id, match, stadium, status, link };
     });
+
     res.json(newFixtures);
+
+    setCache("fixtures", newFixtures);
   } else {
     return errorHandler(res, 404, "No data found.");
   }
@@ -94,7 +98,10 @@ const getFixturesByStatus = asyncHandler(async (req, res) => {
 
       return { _id: fixture._id, match, stadium, status, link };
     });
+
     res.json(newFixtures);
+
+    setCache("status", newFixtures);
   } else {
     return errorHandler(res, 404, "Invalid data.");
   }
@@ -120,6 +127,8 @@ const getFixture = asyncHandler(async (req, res) => {
     data._id = fixture._id;
     data.status = fixture.status;
     data.link = fixture.link;
+
+    setCache(req.params.id, data);
     res.json(data);
   } else {
     return errorHandler(res, 404, "Invalid data.");
