@@ -32,6 +32,8 @@ Then run:
 
 Public Heroku URL can be found on [Sportex API](https://sportex-api.herokuapp.com)
 
+Postman Documentation can be found here: [API docs](https://documenter.getpostman.com/view/3347950/TVRkb8dL)
+
 To Run the test scripts, it's advised to run 
 
 ```bash
