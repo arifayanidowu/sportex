@@ -1,5 +1,5 @@
-// const { createClient } = require("redis");
+const { createClient } = require("redis");
 
-// const client = createClient(process.env.REDIS_URL);
+const client = createClient(process.env.REDIS_URL);
 
-// module.exports = client;
+module.exports = client;

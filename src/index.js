@@ -17,6 +17,7 @@ const teamsRoute = require("./routes/teamsRoute");
 const fixtureRoute = require("./routes/fixturesRoute");
 const usersRoute = require("./routes/usersRoute");
 const searchRoute = require("./routes/searchRoute");
+const client = require("./utils/redis");
 
 config();
 
@@ -34,6 +35,10 @@ const app = express();
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+
+client.on("connect", () => {
+  console.log("[redis]: connected to redis".cyan.bold);
+});
 
 // app.use(
 //   session({
