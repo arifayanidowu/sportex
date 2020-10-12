@@ -65,9 +65,8 @@ const getAllFixtures = asyncHandler(async (req, res) => {
       return { _id: fixture._id, match, stadium, status, link };
     });
 
-    res.json(newFixtures);
-
     setCache("fixtures", newFixtures);
+    res.json(newFixtures);
   } else {
     return errorHandler(res, 404, "No data found.");
   }
@@ -98,10 +97,9 @@ const getFixturesByStatus = asyncHandler(async (req, res) => {
 
       return { _id: fixture._id, match, stadium, status, link };
     });
+    setCache("status", newFixtures);
 
     res.json(newFixtures);
-
-    setCache("status", newFixtures);
   } else {
     return errorHandler(res, 404, "Invalid data.");
   }

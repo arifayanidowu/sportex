@@ -2,7 +2,7 @@ const errorHandler = require("./errorHandler");
 const client = require("./redis");
 
 module.exports = {
-  getCache: (req, res, next, key) => {
+  getCache: (req, res, next) => {
     const { id } = req.params;
     client.get(id, (err, reply) => {
       if (err) {

@@ -1,6 +1,7 @@
 const express = require("express");
 const Fixture = require("../models/Fixture");
 const Team = require("../models/Team");
+const { setCache } = require("../utils/cache");
 
 const router = express.Router();
 
@@ -47,6 +48,7 @@ router.get("/search", async (req, res) => {
         return item;
       }
     });
+    setCache("results", results);
     res.json(results);
   } else {
     res.status(404);

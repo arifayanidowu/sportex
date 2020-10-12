@@ -65,10 +65,20 @@ app.use(xss());
 app.use(helmet());
 app.use(limiter);
 
+const getAllSearchCache = (req, res, next) => {
+  client.get("results", (err, reply) => {
+    if (err) res.status(500).send(err);
+    if (reply !== null) {
+      return res.status(200).json(JSON.parse(reply));
+    }
+    next();
+  });
+};
+
 app.use("/api/users", usersRoute);
 app.use("/api/teams", teamsRoute);
 app.use("/api/fixtures", fixtureRoute);
-app.use("/api", searchRoute);
+app.use("/api", getAllSearchCache, searchRoute);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(join(__dirname, "/public")));

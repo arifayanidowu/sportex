@@ -79,6 +79,7 @@ const registerUser = asyncHandler(async (req, res) => {
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({});
   if (users) {
+    setCache("users", users);
     res.json(users);
   } else {
     return errorHandler(res, 400, "Invalid user data.");

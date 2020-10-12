@@ -9,11 +9,22 @@ const {
 
 const { protect, admin } = require("../middleware/auth");
 const { getCache } = require("../utils/cache");
+const client = require("../utils/redis");
 
 const router = express.Router();
 
+const getAllTeamsCache = (req, res, next) => {
+  client.get("teams", (err, reply) => {
+    if (err) res.status(500).send(err);
+    if (reply !== null) {
+      return res.status(200).json(JSON.parse(reply));
+    }
+    next();
+  });
+};
+
 router.route("/").post(protect, admin, createTeam);
-router.get("/all", protect, getTeams);
+router.get("/all", protect, getAllTeamsCache, getTeams);
 
 router
   .route("/:id")

@@ -46,6 +46,8 @@ const getTeams = asyncHandler(async (req, res) => {
   const teams = await Team.find({}).exec();
 
   if (teams) {
+    setCache("teams", teams);
+
     res.status(200).json(teams);
   } else {
     return errorHandler(res, 404, "Invalid data");
