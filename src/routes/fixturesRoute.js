@@ -16,7 +16,7 @@ const router = express.Router();
 router
   .route("/")
   .post(protect, admin, createFixture)
-  .get(protect, cache.route(), getAllFixtures);
+  .get(protect, admin, cache.route(), getAllFixtures);
 
 router.get("/:status", cache.route(), getFixturesByStatus);
 router.get("/fixture/:id", protect, admin, cache.route(), getFixture);

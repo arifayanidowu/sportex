@@ -17,7 +17,7 @@ router.get("/all", protect, cache.route(), getTeams);
 router
   .route("/:id")
   .get(protect, admin, cache.route(), getTeamById)
-  .put(protect, admin, cache.route(), updateTeam)
+  .put(protect, admin, updateTeam)
   .delete(protect, admin, deleteTeam);
 
 module.exports = router;
